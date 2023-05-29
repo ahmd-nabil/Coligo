@@ -21,4 +21,12 @@ public class Announcement {
 
     @Column(nullable = false)
     private String description;
+
+    @ManyToOne(optional = false)
+    private User user;
+
+    private void setUser(User user) {
+        this.user = user;
+        user.getAnnouncements().add(this);
+    }
 }
