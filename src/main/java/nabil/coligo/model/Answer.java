@@ -25,11 +25,5 @@ public class Answer {
     private Boolean correct = false;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "question_id")
     private Question question;
-
-    private void setQuestion(Question question) {
-        this.question = question;
-        question.getAnswers().add(this);
-    }
 }

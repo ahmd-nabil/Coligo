@@ -39,6 +39,16 @@ public class User {
     private byte[] image;
 
     @Builder.Default
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Announcement> announcements = new HashSet<>();
+
+    public void addAnnouncement(Announcement announcement) {
+        announcements.add(announcement);
+        announcement.setUser(this);
+    }
+
+    public void removeAnnouncement(Announcement announcement) {
+        announcements.remove(announcement);
+        announcement.setUser(null);
+    }
 }

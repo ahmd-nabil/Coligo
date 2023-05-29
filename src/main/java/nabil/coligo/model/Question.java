@@ -28,11 +28,16 @@ public class Question {
     @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Answer> answers = new HashSet<>();
 
+    public void addAnswer(Answer answer) {
+        answers.add(answer);
+        answer.setQuestion(this);
+    }
+
+    public void removeAnswer(Answer answer) {
+        answers.remove(answer);
+        answer.setQuestion(null);
+    }
+
     @ManyToOne(optional = false)
     private Quiz quiz;
-
-    private void setQuiz(Quiz quiz) {
-        this.quiz = quiz;
-        quiz.getQuestions().add(this);
-    }
 }
