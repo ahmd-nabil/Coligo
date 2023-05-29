@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Table(name = "announcement")
 public class Announcement {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,7 +23,7 @@ public class Announcement {
     @Column(nullable = false)
     private String description;
 
-    @ManyToOne(optional = false)
+    @ManyToOne
     private User user;
 
 }

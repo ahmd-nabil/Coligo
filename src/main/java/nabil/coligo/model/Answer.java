@@ -24,6 +24,6 @@ public class Answer {
     @Builder.Default
     private Boolean correct = false;
 
-    @ManyToOne(optional = false)
+    @ManyToOne
     private Question question;
 }

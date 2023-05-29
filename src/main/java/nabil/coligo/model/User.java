@@ -5,8 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.NaturalId;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -18,12 +20,14 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Table(name = "app_user")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, updatable = false)
+    @Column(nullable = false, updatable = false, unique = true)
+    @NaturalId
     private String username;
 
     @Column(nullable = false)
@@ -43,12 +47,25 @@ public class User {
     private Set<Announcement> announcements = new HashSet<>();
 
     public void addAnnouncement(Announcement announcement) {
-        announcements.add(announcement);
         announcement.setUser(this);
+        announcements.add(announcement);
     }
 
     public void removeAnnouncement(Announcement announcement) {
         announcements.remove(announcement);
         announcement.setUser(null);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User that = (User) o;
+        return Objects.equals(username, that.username);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(username);
     }
 }

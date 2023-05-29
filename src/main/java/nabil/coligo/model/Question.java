@@ -25,12 +25,12 @@ public class Question {
     private String question;
 
     @Builder.Default
-    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Answer> answers = new HashSet<>();
 
     public void addAnswer(Answer answer) {
-        answers.add(answer);
         answer.setQuestion(this);
+        answers.add(answer);
     }
 
     public void removeAnswer(Answer answer) {

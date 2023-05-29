@@ -36,8 +36,8 @@ public class Quiz {
     private Set<Question> questions = new HashSet<>();
 
     public void addQuestion(Question question) {
-        questions.add(question);
         question.setQuiz(this);
+        questions.add(question);
     }
 
     public void removeQuestion(Question question) {
