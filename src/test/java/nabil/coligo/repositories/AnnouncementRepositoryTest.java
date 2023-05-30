@@ -41,7 +41,7 @@ class AnnouncementRepositoryTest {
     void testSaveAnnouncement() {
         Announcement savedAnnouncement = announcementRepository.save(announcement);
         User savedUser = userRepository.save(user);
-        savedAnnouncement.setUser(savedUser);
+        savedUser.addAnnouncement(savedAnnouncement);
         userRepository.flush();
         assertThat(userRepository.findAll().get(0).getAnnouncements().size()).isEqualTo(1);
     }

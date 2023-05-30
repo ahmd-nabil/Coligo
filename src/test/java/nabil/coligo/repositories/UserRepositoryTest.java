@@ -48,7 +48,6 @@ class UserRepositoryTest {
 
 
     @Test
-//    @Transactional
     void testDeleteUserCascade() {
         // given
         User savedUser = userRepository.save(user);
@@ -59,6 +58,22 @@ class UserRepositoryTest {
         // when
         assertThat(announcementRepository.findAll().size()).isEqualTo(1);
         userRepository.delete(savedUser);
+        userRepository.flush();
+        //then
+        assertThat(announcementRepository.findAll().size()).isEqualTo(0);
+    }
+
+    @Test
+    void testRemoveAnnouncementLinkOrphanRemoval() {
+        // given
+        User savedUser = userRepository.save(user);
+        Announcement savedAnnouncement = announcementRepository.save(announcement);
+        savedUser.addAnnouncement(savedAnnouncement);
+        userRepository.flush();
+        // when
+        assertThat(savedUser.getAnnouncements().size()).isEqualTo(1);
+        assertThat(announcementRepository.findAll().size()).isEqualTo(1);
+        savedUser.removeAnnouncement(savedAnnouncement);
         userRepository.flush();
         //then
         assertThat(announcementRepository.findAll().size()).isEqualTo(0);
