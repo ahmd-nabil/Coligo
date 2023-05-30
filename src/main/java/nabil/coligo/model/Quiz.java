@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -45,4 +46,26 @@ public class Quiz {
         question.setQuiz(null);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Quiz quiz = (Quiz) o;
+        return Objects.equals(id, quiz.id) && Objects.equals(courseName, quiz.courseName) && Objects.equals(topic, quiz.topic) && Objects.equals(dueTo, quiz.dueTo);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, courseName, topic, dueTo);
+    }
+
+    @Override
+    public String toString() {
+        return "Quiz{" +
+                "id=" + id +
+                ", courseName='" + courseName + '\'' +
+                ", topic='" + topic + '\'' +
+                ", dueTo=" + dueTo +
+                '}';
+    }
 }

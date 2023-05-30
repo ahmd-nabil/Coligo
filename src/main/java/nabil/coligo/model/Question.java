@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -38,6 +39,28 @@ public class Question {
         answer.setQuestion(null);
     }
 
-    @ManyToOne(optional = false)
+    @ManyToOne
     private Quiz quiz;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Question question1 = (Question) o;
+        return Objects.equals(id, question1.id) && Objects.equals(question, question1.question);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, question);
+    }
+
+    @Override
+    public String toString() {
+        return "Question{" +
+                "id=" + id +
+                ", question='" + question + '\'' +
+                ", quiz=" + quiz +
+                '}';
+    }
 }
