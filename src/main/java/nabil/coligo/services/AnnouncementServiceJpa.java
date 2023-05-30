@@ -1,6 +1,5 @@
 package nabil.coligo.services;
 
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import nabil.coligo.exceptions.AnnouncementNotFoundException;
 import nabil.coligo.model.Announcement;
@@ -16,7 +15,6 @@ import java.util.Optional;
  * @author Ahmed Nabil
  */
 @Service
-@Data
 @RequiredArgsConstructor
 public class AnnouncementServiceJpa implements AnnouncementService{
 
