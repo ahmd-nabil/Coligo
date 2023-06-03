@@ -51,8 +51,7 @@ class QuizRepositoryTest {
     void testDeleteQuizCascade() {
         // given
         Quiz savedQuiz = quizRepository.save(quiz);
-        Question savedQuestion = questionRepository.save(question);
-        savedQuiz.addQuestion(savedQuestion);
+        savedQuiz.addQuestion(question);
         quizRepository.flush();
         // when
         assertThat(questionRepository.findAll().size()).isEqualTo(1);
