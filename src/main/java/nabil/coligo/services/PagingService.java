@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 public class PagingService {
 
     private static final Integer DEFAULT_PAGE_NUMBER = 0;
-    private static final Integer DEFAULT_PAGE_SIZE = 20;
+    private static final Integer DEFAULT_PAGE_SIZE = 100;
     public static PageRequest buildPageRequest(Integer pageNumber, Integer pageSize) {
         Integer queryPageNumber = DEFAULT_PAGE_NUMBER;
         Integer queryPageSize = DEFAULT_PAGE_SIZE;
