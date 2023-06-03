@@ -33,7 +33,7 @@ class AnnouncementRepositoryTest {
                 .build();
 
         announcement = Announcement.builder()
-                .description("Whatever announcement description")
+                .content("Whatever announcement description")
                 .build();
     }
 

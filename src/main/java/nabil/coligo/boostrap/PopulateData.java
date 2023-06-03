@@ -76,16 +76,16 @@ public class PopulateData implements CommandLineRunner {
                 .password("123")
                 .build());
         Announcement announcement1 = Announcement.builder()
-                .description("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut.")
+                .content("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut.")
                 .build();
         Announcement announcement2 = Announcement.builder()
-                .description("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut.")
+                .content("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut.")
                 .build();
         Announcement announcement3 = Announcement.builder()
-                .description("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut.")
+                .content("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut.")
                 .build();
         Announcement announcement4 = Announcement.builder()
-                .description("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut.")
+                .content("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut.")
                 .build();
         user.addAnnouncement(announcement1);
         user.addAnnouncement(announcement2);

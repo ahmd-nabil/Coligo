@@ -22,7 +22,7 @@ public class QuizController {
 
     @GetMapping
     public Page<Quiz> findAll(@RequestParam(required = false) Integer pageNumber,
-                                        @RequestParam(required = false) Integer pageSize) {
+                              @RequestParam(required = false) Integer pageSize) {
         return quizService.findAll(pageNumber, pageSize);
     }
 

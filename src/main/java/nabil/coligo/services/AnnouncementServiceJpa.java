@@ -1,7 +1,6 @@
 package nabil.coligo.services;
 
 import lombok.RequiredArgsConstructor;
-import nabil.coligo.exceptions.AnnouncementNotFoundException;
 import nabil.coligo.model.Announcement;
 import nabil.coligo.repositories.AnnouncementRepository;
 import org.springframework.data.domain.Page;
@@ -38,8 +37,12 @@ public class AnnouncementServiceJpa implements AnnouncementService{
     @Override
     @Transactional
     public Optional<Announcement> update(Long id, Announcement announcement) {
-        Announcement foundAnnouncement = announcementRepository.findById(id).orElseThrow(AnnouncementNotFoundException::new);
-        foundAnnouncement.setDescription(announcement.getDescription());
+        Optional<Announcement> announcementOptional = announcementRepository.findById(id);
+        if(announcementOptional.isEmpty()) {
+            return announcementOptional;
+        }
+        Announcement foundAnnouncement = announcementOptional.get();
+        foundAnnouncement.setContent(announcement.getContent());
         return Optional.of(foundAnnouncement);
     }
 

@@ -24,7 +24,7 @@ public class Announcement {
     private Long id;
 
     @Column(nullable = false)
-    private String description;
+    private String content;
 
     @ManyToOne
     private User user;
