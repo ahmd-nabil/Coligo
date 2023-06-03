@@ -1,7 +1,6 @@
 package nabil.coligo.services;
 
 import lombok.RequiredArgsConstructor;
-import nabil.coligo.exceptions.QuizNotFoundException;
 import nabil.coligo.model.Quiz;
 import nabil.coligo.repositories.QuizRepository;
 import org.springframework.data.domain.Page;
@@ -38,7 +37,10 @@ public class QuizServiceJpa implements QuizService{
     @Override
     @Transactional
     public Optional<Quiz> update(Long id, Quiz quiz) {
-        Quiz foundQuiz = quizRepository.findById(id).orElseThrow(QuizNotFoundException::new);
+        Optional<Quiz> optionalQuiz = quizRepository.findById(id);
+        if(optionalQuiz.isEmpty())
+            return optionalQuiz;
+        Quiz foundQuiz = optionalQuiz.get();
         foundQuiz.setCourseName(quiz.getCourseName());
         foundQuiz.setTopic(quiz.getTopic());
         foundQuiz.setDueTo(quiz.getDueTo());
