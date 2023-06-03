@@ -63,12 +63,12 @@ public class Quiz {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Quiz quiz = (Quiz) o;
-        return Objects.equals(id, quiz.id) && Objects.equals(courseName, quiz.courseName) && Objects.equals(topic, quiz.topic) && Objects.equals(dueTo, quiz.dueTo);
+        return id != null && Objects.equals(id, quiz.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, courseName, topic, dueTo);
+        return getClass().hashCode();
     }
 
     @Override

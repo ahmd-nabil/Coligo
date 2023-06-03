@@ -35,12 +35,12 @@ public class Answer {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Answer answer1 = (Answer) o;
-        return Objects.equals(id, answer1.id) && Objects.equals(answer, answer1.answer) && Objects.equals(correct, answer1.correct);
+        Answer answer = (Answer) o;
+        return id != null && Objects.equals(id, answer.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, answer, correct);
+        return getClass().hashCode();
     }
 }
