@@ -1,5 +1,6 @@
 package nabil.coligo.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,6 +27,7 @@ public class Answer {
     @Builder.Default
     private Boolean correct = false;
 
+    @JsonBackReference
     @ManyToOne
     private Question question;
 

@@ -1,7 +1,7 @@
 package nabil.coligo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,11 +17,20 @@ import java.util.Set;
 
 @Entity
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Table(name = "app_user")
 public class User {
+    public User(Long id, String username, String firstName, String lastName, String password, byte[] image, Set<Announcement> announcements) {
+        this.id = id;
+        this.username = username;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.password = password;
+        this.image = image;
+        setAnnouncements(announcements);
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -42,9 +51,15 @@ public class User {
     @Lob
     private byte[] image;
 
+    @JsonIgnore
     @Builder.Default
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Announcement> announcements = new HashSet<>();
+
+    public void setAnnouncements(Set<Announcement> announcements) {
+        this.announcements = new HashSet<>();
+        announcements.forEach(this::addAnnouncement);
+    }
 
     public void addAnnouncement(Announcement announcement) {
         announcement.setUser(this);

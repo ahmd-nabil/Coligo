@@ -1,7 +1,8 @@
 package nabil.coligo.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,19 +16,32 @@ import java.util.Set;
  */
 @Entity
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
 @Builder
 public class Question {
+
+    public Question(Long id, String question, Set<Answer> answers, Quiz quiz) {
+        this.id = id;
+        this.question = question;
+        setAnswers(answers);
+        this.quiz = quiz;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String question;
 
+    @JsonManagedReference
     @Builder.Default
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Answer> answers = new HashSet<>();
+
+    public void setAnswers(Set<Answer> answers) {
+        this.answers = new HashSet<>();
+        answers.forEach(this::addAnswer);
+    }
 
     public void addAnswer(Answer answer) {
         answer.setQuestion(this);
@@ -39,6 +53,7 @@ public class Question {
         answer.setQuestion(null);
     }
 
+    @JsonBackReference
     @ManyToOne
     private Quiz quiz;
 
