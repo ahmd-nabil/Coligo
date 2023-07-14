@@ -10,10 +10,11 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.NaturalId;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author Ahmed Nabil
@@ -24,8 +25,8 @@ import java.util.Set;
 @NoArgsConstructor
 @Builder
 @Table(name = "app_user")
-public class User {
-    public User(Long id, String email, String firstName, String lastName, String password, byte[] image, Set<Announcement> announcements) {
+public class User implements UserDetails {
+    public User(Long id, String email, String firstName, String lastName, String password, byte[] image, Role role, Set<Announcement> announcements) {
         this.id = id;
         this.email = email;
         this.firstName = firstName;
@@ -33,6 +34,7 @@ public class User {
         this.password = password;
         this.image = image;
         setAnnouncements(announcements);
+        this.role = role;
     }
 
     @Id
@@ -59,12 +61,15 @@ public class User {
 
     @NotEmpty
     @NotNull
-    @Size(min = 5, max = 50)
-    @Column(nullable = false, length = 50)
+    @Size(min = 5, max = 255)
+    @Column(nullable = false, length = 255)
     private String password;
 
     @Lob
     private byte[] image;
+
+    @Column(nullable = false)
+    private Role role;
 
     @JsonIgnore
     @Builder.Default
@@ -84,6 +89,36 @@ public class User {
     public void removeAnnouncement(Announcement announcement) {
         announcements.remove(announcement);
         announcement.setUser(null);
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return Collections.singleton(new SimpleGrantedAuthority("ROLE_" + role.name()));
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 
     @Override
