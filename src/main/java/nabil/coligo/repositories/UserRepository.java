@@ -7,4 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @author Ahmed Nabil
  */
 public interface UserRepository extends JpaRepository<User, Long> {
+    User findByEmailIgnoreCase(String email);
 }
