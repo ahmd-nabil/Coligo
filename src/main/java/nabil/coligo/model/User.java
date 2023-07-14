@@ -2,6 +2,10 @@ package nabil.coligo.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,9 +25,9 @@ import java.util.Set;
 @Builder
 @Table(name = "app_user")
 public class User {
-    public User(Long id, String username, String firstName, String lastName, String password, byte[] image, Set<Announcement> announcements) {
+    public User(Long id, String email, String firstName, String lastName, String password, byte[] image, Set<Announcement> announcements) {
         this.id = id;
-        this.username = username;
+        this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
         this.password = password;
@@ -35,17 +39,28 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Email
     @Column(nullable = false, updatable = false, unique = true)
     @NaturalId
-    private String username;
+    private String email;
 
-    @Column(nullable = false)
+    @NotEmpty
+    @NotNull
+    @Size(min = 3, max = 50)
+    @Column(nullable = false, length = 50)
     private String firstName;
 
-    @Column(nullable = false)
+
+    @NotEmpty
+    @NotNull
+    @Size(min = 3, max = 50)
+    @Column(nullable = false, length = 50)
     private String lastName;
 
-    @Column(nullable = false)
+    @NotEmpty
+    @NotNull
+    @Size(min = 5, max = 50)
+    @Column(nullable = false, length = 50)
     private String password;
 
     @Lob
@@ -76,19 +91,19 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User that = (User) o;
-        return Objects.equals(username, that.username);
+        return Objects.equals(email, that.email);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(username);
+        return Objects.hash(email);
     }
 
     @Override
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", username='" + username + '\'' +
+                ", username='" + email + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", password='" + password + '\'' +
