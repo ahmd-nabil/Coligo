@@ -5,6 +5,7 @@ import nabil.coligo.model.*;
 import nabil.coligo.repositories.QuizRepository;
 import nabil.coligo.repositories.UserRepository;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +23,7 @@ public class PopulateData implements CommandLineRunner {
 
     private final UserRepository userRepository;
     private final QuizRepository quizRepository;
+    private final PasswordEncoder passwordEncoder;
     @Transactional
     @Override
     public void run(String... args) throws Exception {
@@ -72,8 +74,9 @@ public class PopulateData implements CommandLineRunner {
         User user = userRepository.save(User.builder()
                 .firstName("Ahmed")
                 .lastName("Nabil")
-                .username("ahmednabil")
-                .password("123")
+                .email("ahmednabil@gmail.com")
+                .password(passwordEncoder.encode("123"))
+                .role(Role.INSTRUCTOR)
                 .build());
         Announcement announcement1 = Announcement.builder()
                 .content("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut.")
