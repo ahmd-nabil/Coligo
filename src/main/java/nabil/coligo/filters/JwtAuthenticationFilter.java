@@ -31,7 +31,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             try {
                 if(jwtService.isValid(token)) {
                     SecurityContextHolder.getContext().setAuthentication(
-                            new UsernamePasswordAuthenticationToken((Principal) () -> jwtService.getEmail(token), null, jwtService.getAuthorities(token)));
+                            new UsernamePasswordAuthenticationToken(
+                                    (Principal) () -> jwtService.getEmail(token),
+                                    null,
+                                    jwtService.getAuthorities(token)));
+                    // could be done with authenticationManager.authenticate but will cause database call
+                    // and also will require handling circular dependencies
+                    // SecurityConfig -> JwtAuthenticationFilter -> AuthenticationManager -> SecurityConfig
                 }
             } catch (Exception e) {
                 throw new JwtException(e.getMessage());
