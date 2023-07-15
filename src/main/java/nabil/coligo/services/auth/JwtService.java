@@ -30,22 +30,14 @@ public class JwtService {
                 .claim("role", user.getRole().name())
                 .setIssuer(ISSUER)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis()+24*60*60*1000))
+                .setExpiration(new Date(System.currentTimeMillis()+ 30*60*1000))
                 .signWith(getSignKey())
                 .compact();
     }
 
     public String generateToken(Authentication authentication) {
         User user = (User) authentication.getPrincipal();
-        return Jwts
-                .builder()
-                .setSubject(user.getEmail())
-                .claim("role", user.getRole().name())
-                .setIssuer(ISSUER)
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 30*60*1000))
-                .signWith(getSignKey())
-                .compact();
+        return generateToken(user);
     }
 
 
