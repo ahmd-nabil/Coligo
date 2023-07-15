@@ -1,6 +1,7 @@
 package nabil.coligo.repositories;
 
 import nabil.coligo.model.Announcement;
+import nabil.coligo.model.Role;
 import nabil.coligo.model.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,10 +26,11 @@ class UserRepositoryTest {
     @BeforeEach
     void setUp() {
         user = User.builder()
-                .username("AhmedNabil")
+                .email("AhmedNabil@gmail.com")
                 .firstName("Ahmed")
                 .lastName("Nabil")
                 .password("Whatever")
+                .role(Role.STUDENT)
                 .build();
 
         announcement = Announcement.builder()

@@ -1,14 +1,15 @@
 package nabil.coligo.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import nabil.coligo.model.Answer;
-import nabil.coligo.model.Question;
-import nabil.coligo.model.Quiz;
+import nabil.coligo.model.*;
 import nabil.coligo.services.QuizService;
+import nabil.coligo.services.auth.JwtService;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -28,7 +29,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * @author Ahmed Nabil
  */
-@WebMvcTest(QuizController.class)
+@SpringBootTest
+@AutoConfigureMockMvc
 class QuizControllerTest {
 
     @Autowired
@@ -39,6 +41,20 @@ class QuizControllerTest {
 
     @Autowired
     ObjectMapper objectMapper;
+    private static String token;
+
+    @BeforeAll
+    static void beforeAll() {
+        User user = User.builder()
+                .id(0L)
+                .firstName("Ahmed")
+                .lastName("Nabil")
+                .email("ahmednabil@gmail.com")
+                .password("123")
+                .role(Role.INSTRUCTOR)
+                .build();
+        token = "Bearer "+new JwtService().generateToken(user);
+    }
 
     Quiz quiz;
 
@@ -80,11 +96,13 @@ class QuizControllerTest {
         // given
         given(quizService.save(any())).willReturn(quiz);
 
-        mockMvc.perform(post("/api/v1/quizzes")
+        mockMvc.perform(
+                post("/api/v1/quizzes")
+                .header("Authorization", token)
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsBytes(quiz))
-        ).andExpect(status().isCreated())
+                .content(objectMapper.writeValueAsBytes(quiz)))
+                .andExpect(status().isCreated())
                 .andExpect(header().exists("Location"));
     }
 
@@ -93,7 +111,9 @@ class QuizControllerTest {
         // given
         given(quizService.update(any(), any())).willReturn(Optional.of(quiz));
 
-        mockMvc.perform(put("/api/v1/quizzes/1")
+        mockMvc.perform(
+                put("/api/v1/quizzes/1")
+                .header("Authorization", token)
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsBytes(quiz)))
@@ -105,8 +125,10 @@ class QuizControllerTest {
         // given
         given(quizService.delete(any())).willReturn(true);
 
-        mockMvc.perform(delete("/api/v1/quizzes/1")
-                        .accept(MediaType.APPLICATION_JSON))
+        mockMvc.perform(
+                delete("/api/v1/quizzes/1")
+                .header("Authorization", token)
+                .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
 
@@ -114,10 +136,12 @@ class QuizControllerTest {
     void testUpdateQuizFails() throws Exception {
         // given
         given(quizService.update(any(), any())).willReturn(Optional.empty());
-        mockMvc.perform(put("/api/v1/quizzes/11")
-                        .accept(MediaType.APPLICATION_JSON)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsBytes(quiz)))
+        mockMvc.perform(
+                put("/api/v1/quizzes/11")
+                .accept(MediaType.APPLICATION_JSON)
+                .header("Authorization", token)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsBytes(quiz)))
                 .andExpect(status().isNotFound());
     }
 
@@ -126,8 +150,10 @@ class QuizControllerTest {
         // given
         given(quizService.delete(any())).willReturn(false);
 
-        mockMvc.perform(delete("/api/v1/quizzes/11")
-                        .accept(MediaType.APPLICATION_JSON))
+        mockMvc.perform(
+                delete("/api/v1/quizzes/11")
+                .header("Authorization", token)
+                .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }
 }
