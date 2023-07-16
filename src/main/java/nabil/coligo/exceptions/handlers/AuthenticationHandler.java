@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class AuthenticationHandler {
     @ExceptionHandler({InternalAuthenticationServiceException.class, BadCredentialsException.class})
-    public ResponseEntity<String> emailNotFound(Exception exception) {
-        return new ResponseEntity<>("email or Password not good !", HttpStatus.UNAUTHORIZED);
+    public ResponseEntity<String> badCredentials(Exception exception) {
+        return new ResponseEntity<>("Email or Password not good !", HttpStatus.UNAUTHORIZED);
     }
 }

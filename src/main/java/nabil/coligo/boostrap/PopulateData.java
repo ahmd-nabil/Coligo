@@ -75,7 +75,7 @@ public class PopulateData implements CommandLineRunner {
                 .firstName("Ahmed")
                 .lastName("Nabil")
                 .email("ahmednabil@gmail.com")
-                .password(passwordEncoder.encode("123"))
+                .password(passwordEncoder.encode("12345"))
                 .role(Role.INSTRUCTOR)
                 .build());
         Announcement announcement1 = Announcement.builder()
