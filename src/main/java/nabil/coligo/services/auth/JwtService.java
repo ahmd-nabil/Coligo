@@ -31,6 +31,7 @@ public class JwtService {
                 .setIssuer(ISSUER)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis()+ 30*60*1000))
+                .claim("name", user.getFirstName().concat(" ").concat(user.getLastName()))
                 .signWith(getSignKey())
                 .compact();
     }
