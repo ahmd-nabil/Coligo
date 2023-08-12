@@ -1,7 +1,8 @@
 package nabil.coligo.services;
 
 import lombok.RequiredArgsConstructor;
-import nabil.coligo.model.Announcement;
+import nabil.coligo.dtos.AnnouncementDto;
+import nabil.coligo.mappers.AnnouncementMapper;
 import nabil.coligo.repositories.AnnouncementRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,32 +19,37 @@ import java.util.Optional;
 public class AnnouncementServiceJpa implements AnnouncementService{
 
     private final AnnouncementRepository announcementRepository;
+    private final AnnouncementMapper announcementMapper;
     @Override
-    public Page<Announcement> findAll(Integer pageNumber, Integer pageSize) {
+    public Page<AnnouncementDto> findAll(Integer pageNumber, Integer pageSize) {
         PageRequest pageRequest = PagingService.buildPageRequest(pageNumber, pageSize);
-        return announcementRepository.findAllByOrderByCreatedDateDesc(pageRequest);
+        return announcementRepository
+                .findAllByOrderByCreatedDateDesc(pageRequest)
+                .map(announcementMapper::announcementToAnnouncementDto);
     }
 
     @Override
-    public Optional<Announcement> findById(Long id) {
-        return announcementRepository.findById(id);
+    public Optional<AnnouncementDto> findById(Long id) {
+        return announcementRepository.findById(id).map(announcementMapper::announcementToAnnouncementDto);
     }
 
     @Override
-    public Announcement save(Announcement announcement) {
-        return announcementRepository.save(announcement);
+    public AnnouncementDto save(AnnouncementDto announcementDto) {
+        return announcementMapper.announcementToAnnouncementDto(
+                announcementRepository.save(announcementMapper.announcementDtoToAnnouncement(announcementDto))
+        );
     }
 
     @Override
     @Transactional
-    public Optional<Announcement> update(Long id, Announcement announcement) {
-        Optional<Announcement> announcementOptional = announcementRepository.findById(id);
-        if(announcementOptional.isEmpty()) {
-            return announcementOptional;
+    public Optional<AnnouncementDto> update(Long id, AnnouncementDto announcementDto) {
+        Optional<AnnouncementDto> dtoOptional = announcementRepository.findById(id).map(announcementMapper::announcementToAnnouncementDto);
+        if(dtoOptional.isEmpty()) {
+            return dtoOptional;
         }
-        Announcement foundAnnouncement = announcementOptional.get();
-        foundAnnouncement.setContent(announcement.getContent());
-        return Optional.of(foundAnnouncement);
+        AnnouncementDto foundDto = dtoOptional.get();
+        foundDto.setContent(foundDto.getContent());
+        return Optional.of(foundDto);
     }
 
     @Override

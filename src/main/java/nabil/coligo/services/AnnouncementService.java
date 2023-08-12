@@ -1,6 +1,6 @@
 package nabil.coligo.services;
 
-import nabil.coligo.model.Announcement;
+import nabil.coligo.dtos.AnnouncementDto;
 import org.springframework.data.domain.Page;
 
 import java.util.Optional;
@@ -9,9 +9,9 @@ import java.util.Optional;
  * @author Ahmed Nabil
  */
 public interface AnnouncementService {
-    Page<Announcement> findAll(Integer pageNumber, Integer pageSize);
-    Optional<Announcement> findById(Long id);
-    Announcement save(Announcement announcement);
-    Optional<Announcement> update(Long id, Announcement announcement);
+    Page<AnnouncementDto> findAll(Integer pageNumber, Integer pageSize);
+    Optional<AnnouncementDto> findById(Long id);
+    AnnouncementDto save(AnnouncementDto announcementDto);
+    Optional<AnnouncementDto> update(Long id, AnnouncementDto announcementDto);
     boolean deleteById(Long id);
 }
