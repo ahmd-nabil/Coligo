@@ -9,5 +9,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @author Ahmed Nabil
  */
 public interface AnnouncementRepository extends JpaRepository<Announcement, Long> {
-    Page<Announcement> findAllByOrderByCreatedDateDesc(Pageable pageable);
+    Page<Announcement> findAllByOrderByCreatedAtDesc(Pageable pageable);
 }

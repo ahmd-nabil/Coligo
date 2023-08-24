@@ -30,7 +30,7 @@ public class Announcement {
     private User user;
 
     @CreatedDate
-    private LocalDateTime createdDate;
+    private LocalDateTime createdAt;
 
     @Override
     public boolean equals(Object o) {
