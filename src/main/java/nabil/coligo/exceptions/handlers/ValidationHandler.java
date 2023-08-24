@@ -15,6 +15,7 @@ import java.util.Map;
  */
 @RestControllerAdvice
 public class ValidationHandler {
+    // TODO change error response to map field => errors for both exceptionHandlers
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, List<String>>> controllerValidationHandler(MethodArgumentNotValidException exception) {
         List<String> errorsMessages = new ArrayList<>();
