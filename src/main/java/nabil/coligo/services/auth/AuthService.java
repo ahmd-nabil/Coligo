@@ -1,10 +1,10 @@
 package nabil.coligo.services.auth;
 
 import lombok.RequiredArgsConstructor;
+import nabil.coligo.dtos.LoginRequest;
+import nabil.coligo.dtos.RegisterRequest;
 import nabil.coligo.model.Role;
 import nabil.coligo.model.User;
-import nabil.coligo.model.auth.LoginRequest;
-import nabil.coligo.model.auth.RegisterRequest;
 import nabil.coligo.repositories.UserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

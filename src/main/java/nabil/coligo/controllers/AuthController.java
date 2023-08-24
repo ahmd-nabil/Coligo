@@ -1,9 +1,9 @@
 package nabil.coligo.controllers;
 
 import lombok.RequiredArgsConstructor;
+import nabil.coligo.dtos.LoginRequest;
+import nabil.coligo.dtos.RegisterRequest;
 import nabil.coligo.model.AuthResponse;
-import nabil.coligo.model.auth.LoginRequest;
-import nabil.coligo.model.auth.RegisterRequest;
 import nabil.coligo.services.auth.AuthService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
