@@ -1,6 +1,5 @@
 package nabil.coligo.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
@@ -71,7 +70,6 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private Role role;
 
-    @JsonIgnore
     @Builder.Default
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Announcement> announcements = new HashSet<>();
