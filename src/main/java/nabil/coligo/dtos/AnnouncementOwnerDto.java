@@ -5,8 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
 /**
  * @author Ahmed Nabil
  */
@@ -14,9 +12,10 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Data
 @Builder
-public class AnnouncementDto {
+public class AnnouncementOwnerDto {
     private Long id;
-    private String content;
-    private AnnouncementOwnerDto user;
-    private LocalDateTime createdAt;
+    private String email;
+    private String firstName;
+    private String lastName;
+    private byte[] image;
 }

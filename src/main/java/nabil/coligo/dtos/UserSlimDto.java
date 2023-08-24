@@ -5,18 +5,15 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
 /**
  * @author Ahmed Nabil
  */
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
 @Builder
-public class AnnouncementDto {
+@Data
+public class UserSlimDto {
     private Long id;
-    private String content;
-    private AnnouncementOwnerDto user;
-    private LocalDateTime createdAt;
+    private String firstName;
+    private String lastName;
 }

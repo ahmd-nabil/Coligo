@@ -1,15 +1,15 @@
 package nabil.coligo.controllers;
 
 import lombok.RequiredArgsConstructor;
+import nabil.coligo.dtos.AnnouncementAllDto;
+import nabil.coligo.dtos.AnnouncementCreateDto;
 import nabil.coligo.dtos.AnnouncementDto;
-import nabil.coligo.exceptions.AnnouncementNotFoundException;
 import nabil.coligo.services.AnnouncementService;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
-import java.util.Optional;
 
 /**
  * @author Ahmed Nabil
@@ -23,37 +23,33 @@ public class AnnouncementController {
     private final AnnouncementService announcementService;
 
     @GetMapping
-    public Page<AnnouncementDto> findAll(@RequestParam(required = false) Integer pageNumber,
-                                      @RequestParam(required = false) Integer pageSize) {
+    public Page<AnnouncementAllDto> findAll(@RequestParam(required = false) Integer pageNumber,
+                                            @RequestParam(required = false) Integer pageSize) {
         return announcementService.findAll(pageNumber, pageSize);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<AnnouncementDto> findById(@PathVariable(name = "id") Long id) {
-        Optional<AnnouncementDto> announcementDtoOptional = announcementService.findById(id);
-        if(announcementDtoOptional.isEmpty())
-            throw new AnnouncementNotFoundException();
-        return ResponseEntity.ok(announcementDtoOptional.get());
+        AnnouncementDto announcementDto = announcementService.findById(id);
+        return ResponseEntity.ok(announcementDto);
     }
 
     @PostMapping
-    public ResponseEntity<?> saveAnnouncement(@RequestBody AnnouncementDto announcementDto) {
-        AnnouncementDto saved = announcementService.save(announcementDto);
-        return ResponseEntity.created(URI.create("/api/v1/announcements/"+saved.getId())).build();
+    public ResponseEntity<?> saveAnnouncement(@RequestBody AnnouncementCreateDto announcementCreateDto) {
+        AnnouncementDto saved = announcementService.save(announcementCreateDto);
+        return ResponseEntity.created(URI.create("/api/v1/announcements/" + saved.getId())).build();
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<?> updateAnnouncement(@PathVariable(name = "id") Long id,
-                                                @RequestBody AnnouncementDto announcementDto) {
-        announcementService.update(id, announcementDto).orElseThrow(AnnouncementNotFoundException::new);
+                                                @RequestBody AnnouncementCreateDto announcementCreateDto) {
+        announcementService.update(id, announcementCreateDto);
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteAnnouncement(@PathVariable(name = "id") Long id) {
-        boolean deleted = announcementService.deleteById(id);
-        if(deleted)
-            return ResponseEntity.ok().build();
-        throw new AnnouncementNotFoundException();
+        announcementService.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 }

@@ -14,9 +14,9 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Data
 @Builder
-public class AnnouncementDto {
+public class AnnouncementAllDto {
     private Long id;
     private String content;
-    private AnnouncementOwnerDto user;
+    private UserSlimDto user;
     private LocalDateTime createdAt;
 }
