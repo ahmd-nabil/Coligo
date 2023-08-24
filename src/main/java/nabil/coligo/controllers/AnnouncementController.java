@@ -17,7 +17,7 @@ import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("${controller.announcement.path}")
+@RequestMapping("/api/v1/announcements")
 public class AnnouncementController {
 
     private final AnnouncementService announcementService;
