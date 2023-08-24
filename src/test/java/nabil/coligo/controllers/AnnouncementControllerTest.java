@@ -1,13 +1,16 @@
 package nabil.coligo.controllers;
 
+import nabil.coligo.services.auth.JwtService;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.context.annotation.Import;
 
 /**
  * @author Ahmed Nabil
  */
-@SpringBootTest
-@AutoConfigureMockMvc
+@WebMvcTest(AnnouncementController.class)
+@AutoConfigureMockMvc(addFilters = false)
+@Import(JwtService.class)
 class AnnouncementControllerTest {
 //
 //    @Autowired
