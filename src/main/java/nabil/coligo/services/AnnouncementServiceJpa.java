@@ -5,7 +5,7 @@ import nabil.coligo.dtos.AnnouncementDto;
 import nabil.coligo.mappers.AnnouncementMapper;
 import nabil.coligo.repositories.AnnouncementRepository;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,9 +22,9 @@ public class AnnouncementServiceJpa implements AnnouncementService{
     private final AnnouncementMapper announcementMapper;
     @Override
     public Page<AnnouncementDto> findAll(Integer pageNumber, Integer pageSize) {
-        PageRequest pageRequest = PagingService.buildPageRequest(pageNumber, pageSize);
+        Pageable pageable = PagingService.getPageable(pageNumber, pageSize);
         return announcementRepository
-                .findAllByOrderByCreatedDateDesc(pageRequest)
+                .findAllByOrderByCreatedDateDesc(pageable)
                 .map(announcementMapper::announcementToAnnouncementDto);
     }
 
