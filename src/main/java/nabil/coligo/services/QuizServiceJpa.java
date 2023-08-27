@@ -6,7 +6,7 @@ import nabil.coligo.mappers.QuizMapper;
 import nabil.coligo.model.Quiz;
 import nabil.coligo.repositories.QuizRepository;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,8 +23,8 @@ public class QuizServiceJpa implements QuizService{
     private final QuizMapper quizMapper;
     @Override
     public Page<QuizAllDto> findAll(Integer pageNumber, Integer pageSize) {
-        PageRequest pageRequest = PagingService.buildPageRequest(pageNumber, pageSize);
-        return quizRepository.findAllByOrderByDueTo(pageRequest).map(quizMapper::toQuizAllDto);
+        Pageable pageable = PagingService.getPageable(pageNumber, pageSize);
+        return quizRepository.findAllByOrderByDueTo(pageable).map(quizMapper::toQuizAllDto);
     }
 
     @Override
