@@ -1,6 +1,7 @@
 package nabil.coligo.controllers;
 
 import lombok.RequiredArgsConstructor;
+import nabil.coligo.dtos.QuizAllDto;
 import nabil.coligo.exceptions.QuizNotFoundException;
 import nabil.coligo.model.Quiz;
 import nabil.coligo.services.QuizService;
@@ -21,8 +22,8 @@ public class QuizController {
     private final QuizService quizService;
 
     @GetMapping
-    public Page<Quiz> findAll(@RequestParam(required = false) Integer pageNumber,
-                              @RequestParam(required = false) Integer pageSize) {
+    public Page<QuizAllDto> findAll(@RequestParam(required = false) Integer pageNumber,
+                                    @RequestParam(required = false) Integer pageSize) {
         return quizService.findAll(pageNumber, pageSize);
     }
 

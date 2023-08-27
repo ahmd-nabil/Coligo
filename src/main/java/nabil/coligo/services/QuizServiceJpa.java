@@ -1,6 +1,8 @@
 package nabil.coligo.services;
 
 import lombok.RequiredArgsConstructor;
+import nabil.coligo.dtos.QuizAllDto;
+import nabil.coligo.mappers.QuizMapper;
 import nabil.coligo.model.Quiz;
 import nabil.coligo.repositories.QuizRepository;
 import org.springframework.data.domain.Page;
@@ -18,10 +20,11 @@ import java.util.Optional;
 public class QuizServiceJpa implements QuizService{
 
     private final QuizRepository quizRepository;
+    private final QuizMapper quizMapper;
     @Override
-    public Page<Quiz> findAll(Integer pageNumber, Integer pageSize) {
+    public Page<QuizAllDto> findAll(Integer pageNumber, Integer pageSize) {
         PageRequest pageRequest = PagingService.buildPageRequest(pageNumber, pageSize);
-        return quizRepository.findAllByOrderByDueTo(pageRequest);
+        return quizRepository.findAllByOrderByDueTo(pageRequest).map(quizMapper::toQuizAllDto);
     }
 
     @Override
