@@ -1,6 +1,5 @@
 package nabil.coligo.model;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Data;
@@ -39,7 +38,6 @@ public class Quiz {
 
     private LocalDateTime dueTo;
 
-    @JsonManagedReference
     @Builder.Default
     @OneToMany(mappedBy = "quiz", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Question> questions = new HashSet<>();

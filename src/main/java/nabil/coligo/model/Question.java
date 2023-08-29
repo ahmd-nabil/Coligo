@@ -1,7 +1,5 @@
 package nabil.coligo.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Data;
@@ -32,7 +30,6 @@ public class Question {
 
     private String question;
 
-    @JsonManagedReference
     @Builder.Default
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Answer> answers = new HashSet<>();
@@ -52,7 +49,6 @@ public class Question {
         answer.setQuestion(null);
     }
 
-    @JsonBackReference
     @ManyToOne
     private Quiz quiz;
 
