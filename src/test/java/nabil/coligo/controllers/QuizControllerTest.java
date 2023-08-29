@@ -1,6 +1,9 @@
 package nabil.coligo.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import nabil.coligo.dtos.AnswerCreateDto;
+import nabil.coligo.dtos.QuestionCreateDto;
+import nabil.coligo.dtos.QuizCreateDto;
 import nabil.coligo.model.*;
 import nabil.coligo.services.QuizService;
 import nabil.coligo.services.auth.JwtService;
@@ -59,7 +62,7 @@ class QuizControllerTest {
     }
 
     Quiz quiz;
-
+    QuizCreateDto quizCreateDto;
     @BeforeEach
     void setUp() {
         Answer answer1 = Answer.builder().id(1L)
@@ -71,7 +74,6 @@ class QuizControllerTest {
         Answer answer3 = Answer.builder().id(3L)
                 .answer("A3")
                 .build();
-
         Question question1 = Question.builder().id(1L)
                 .question("q1?")
                 .answers(new HashSet<>(Arrays.asList(answer1, answer2)))
@@ -83,27 +85,51 @@ class QuizControllerTest {
         Question question3 = Question.builder().id(3L)
                 .question("What are arrays?")
                 .build();
-
-
-
         quiz = Quiz.builder().id(1L)
                 .courseName("Algo")
                 .topic("Arrays")
                 .dueTo(LocalDateTime.parse("2023-05-31T01:30:00"))
                 .questions(new HashSet<>(Arrays.asList(question1, question2, question3))).build();
+
+        QuestionCreateDto questionCreateDto1 = QuestionCreateDto.builder()
+                .question("q1?")
+                .build();
+        QuestionCreateDto questionCreateDto2 = QuestionCreateDto.builder()
+                .question("q2?")
+                .build();
+        AnswerCreateDto answerCreateDto1 = AnswerCreateDto.builder()
+                .answer("A1")
+                .build();
+        AnswerCreateDto answerCreateDto2 = AnswerCreateDto.builder()
+                .answer("A2")
+                .build();
+        AnswerCreateDto answerCreateDto3 = AnswerCreateDto.builder()
+                .answer("A3")
+                .build();
+
+        QuestionCreateDto questionCreateDto3 = QuestionCreateDto.builder()
+                .question("q3?")
+                .answers(new HashSet<>(Arrays.asList(answerCreateDto1, answerCreateDto2, answerCreateDto3)))
+                .build();
+
+        quizCreateDto = QuizCreateDto.builder()
+                .courseName("Algo")
+                .topic("Arrays")
+                .dueTo(LocalDateTime.parse("2023-05-31T01:30:00"))
+                .questions(new HashSet<>(Arrays.asList(questionCreateDto1, questionCreateDto2, questionCreateDto3))).build();
+
     }
 
     @Test
     void testSaveQuiz() throws Exception {
         // given
         given(quizService.save(any())).willReturn(quiz);
-
         mockMvc.perform(
                 post("/api/v1/quizzes")
                 .header("Authorization", token)
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsBytes(quiz)))
+                .content(objectMapper.writeValueAsBytes(quizCreateDto)))
                 .andExpect(status().isCreated())
                 .andExpect(header().exists("Location"));
     }
