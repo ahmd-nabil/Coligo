@@ -31,8 +31,6 @@ public class AnnouncementServiceJpa implements AnnouncementService{
     @Override
     public Page<AnnouncementAllDto> findAll(Integer pageNumber, Integer pageSize) {
         Pageable pageable = PagingService.getPageable(pageNumber, pageSize);
-    public Page<AnnouncementDto> findAll(Integer pageNumber, Integer pageSize) {
-        Pageable pageable = PagingService.getPageable(pageNumber, pageSize);
         return announcementRepository
                 .findAllByOrderByCreatedAtDesc(pageable)
                 .map(announcementMapper::toAnnouncementAllDto);
