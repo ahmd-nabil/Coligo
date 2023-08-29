@@ -3,6 +3,7 @@ package nabil.coligo.controllers;
 import lombok.RequiredArgsConstructor;
 import nabil.coligo.dtos.QuizAllDto;
 import nabil.coligo.dtos.QuizCreateDto;
+import nabil.coligo.dtos.QuizGetDto;
 import nabil.coligo.exceptions.QuizNotFoundException;
 import nabil.coligo.model.Quiz;
 import nabil.coligo.services.QuizService;
@@ -26,6 +27,11 @@ public class QuizController {
     public Page<QuizAllDto> findAll(@RequestParam(required = false) Integer pageNumber,
                                     @RequestParam(required = false) Integer pageSize) {
         return quizService.findAll(pageNumber, pageSize);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<QuizGetDto> findById(@PathVariable Long id) {
+        return ResponseEntity.ok().body(quizService.findById(id));
     }
 
     @PostMapping

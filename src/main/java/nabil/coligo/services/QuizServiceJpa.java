@@ -3,6 +3,8 @@ package nabil.coligo.services;
 import lombok.RequiredArgsConstructor;
 import nabil.coligo.dtos.QuizAllDto;
 import nabil.coligo.dtos.QuizCreateDto;
+import nabil.coligo.dtos.QuizGetDto;
+import nabil.coligo.exceptions.QuizNotFoundException;
 import nabil.coligo.mappers.QuizMapper;
 import nabil.coligo.model.Quiz;
 import nabil.coligo.repositories.QuizRepository;
@@ -29,8 +31,8 @@ public class QuizServiceJpa implements QuizService{
     }
 
     @Override
-    public Optional<Quiz> findById(Long id) {
-        return quizRepository.findById(id);
+    public QuizGetDto findById(Long id) {
+        return quizRepository.findById(id).map(quizMapper::toQuizGetDto).orElseThrow(QuizNotFoundException::new);
     }
 
     @Override
