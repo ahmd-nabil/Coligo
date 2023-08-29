@@ -1,6 +1,7 @@
 package nabil.coligo.mappers;
 
 import nabil.coligo.dtos.QuizAllDto;
+import nabil.coligo.dtos.QuizCreateDto;
 import nabil.coligo.model.Quiz;
 import org.mapstruct.Mapper;
 
@@ -10,4 +11,5 @@ import org.mapstruct.Mapper;
 @Mapper
 public interface QuizMapper {
     QuizAllDto toQuizAllDto(Quiz quiz);
+    Quiz toQuiz(QuizCreateDto dto);
 }

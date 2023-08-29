@@ -1,6 +1,9 @@
 package nabil.coligo.services;
 
+import nabil.coligo.dtos.AnswerCreateDto;
+import nabil.coligo.dtos.QuestionCreateDto;
 import nabil.coligo.dtos.QuizAllDto;
+import nabil.coligo.dtos.QuizCreateDto;
 import nabil.coligo.mappers.QuizMapper;
 import nabil.coligo.model.Answer;
 import nabil.coligo.model.Question;
@@ -80,27 +83,28 @@ class QuizServiceJpaTest {
     }
     @Test
     void saveQuizWithMultipleQuestions() {
-        Question question1 = Question.builder()
+        QuestionCreateDto question1 = QuestionCreateDto.builder()
                 .question("q1?")
                 .build();
-        Question question2 = Question.builder()
+        QuestionCreateDto question2 = QuestionCreateDto.builder()
                 .question("q2?")
                 .build();
-        Answer answer1 = Answer.builder()
+        AnswerCreateDto answer1 = AnswerCreateDto.builder()
                 .answer("A1")
                 .build();
-        Answer answer2 = Answer.builder()
+        AnswerCreateDto answer2 = AnswerCreateDto.builder()
                 .answer("A2")
                 .build();
-        Answer answer3 = Answer.builder()
+        AnswerCreateDto answer3 = AnswerCreateDto.builder()
                 .answer("A3")
                 .build();
 
-        Question question3 = Question.builder()
+        QuestionCreateDto question3 = QuestionCreateDto.builder()
                 .question("q3?")
                 .answers(new HashSet<>(Arrays.asList(answer1, answer2, answer3)))
                 .build();
-        Quiz quiz1 = Quiz.builder()
+
+        QuizCreateDto quiz1 = QuizCreateDto.builder()
                 .courseName("Algo")
                 .topic("Arrays")
                 .dueTo(LocalDateTime.parse("2023-05-31T01:30:00"))

@@ -2,6 +2,7 @@ package nabil.coligo.services;
 
 import lombok.RequiredArgsConstructor;
 import nabil.coligo.dtos.QuizAllDto;
+import nabil.coligo.dtos.QuizCreateDto;
 import nabil.coligo.mappers.QuizMapper;
 import nabil.coligo.model.Quiz;
 import nabil.coligo.repositories.QuizRepository;
@@ -33,7 +34,8 @@ public class QuizServiceJpa implements QuizService{
     }
 
     @Override
-    public Quiz save(Quiz quiz) {
+    public Quiz save(QuizCreateDto quizCreateDto) {
+        Quiz quiz = quizMapper.toQuiz(quizCreateDto);
         return quizRepository.save(quiz);
     }
 

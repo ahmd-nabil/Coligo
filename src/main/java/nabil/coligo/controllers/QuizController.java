@@ -2,6 +2,7 @@ package nabil.coligo.controllers;
 
 import lombok.RequiredArgsConstructor;
 import nabil.coligo.dtos.QuizAllDto;
+import nabil.coligo.dtos.QuizCreateDto;
 import nabil.coligo.exceptions.QuizNotFoundException;
 import nabil.coligo.model.Quiz;
 import nabil.coligo.services.QuizService;
@@ -28,8 +29,8 @@ public class QuizController {
     }
 
     @PostMapping
-    public ResponseEntity<URI> saveQuiz(@RequestBody Quiz quiz) {
-        Quiz savedQuiz = quizService.save(quiz);
+    public ResponseEntity<URI> saveQuiz(@RequestBody QuizCreateDto quizCreateDto) {
+        Quiz savedQuiz = quizService.save(quizCreateDto);
         return ResponseEntity.created(URI.create("/api/v1/quizzes/" + savedQuiz.getId())).build();
     }
 
