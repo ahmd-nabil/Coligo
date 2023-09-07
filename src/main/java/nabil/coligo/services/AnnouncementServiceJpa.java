@@ -6,6 +6,7 @@ import nabil.coligo.dtos.AnnouncementCreateDto;
 import nabil.coligo.dtos.AnnouncementDto;
 import nabil.coligo.dtos.AnnouncementUpdateDto;
 import nabil.coligo.exceptions.AnnouncementNotFoundException;
+import nabil.coligo.exceptions.ForbiddenDataAccessException;
 import nabil.coligo.mappers.AnnouncementMapper;
 import nabil.coligo.model.Announcement;
 import nabil.coligo.model.User;
@@ -52,8 +53,12 @@ public class AnnouncementServiceJpa implements AnnouncementService{
     }
 
     @Override
+//    @PostAuthorize("returnObject.user.email == authentication.name") // this will work only with get requests (does not roll back)
     public AnnouncementDto update(Long id, AnnouncementUpdateDto dto) {
+        String authenticatedEmail = SecurityContextHolder.getContext().getAuthentication().getName();
         Announcement updatedAnnouncement = announcementRepository.findById(id).orElseThrow(AnnouncementNotFoundException::new);
+        String resourceOwnerEmail = updatedAnnouncement.getUser().getUsername();
+        if(!authenticatedEmail.equals(resourceOwnerEmail)) throw new ForbiddenDataAccessException();
         updatedAnnouncement.setContent(dto.getContent());
         return announcementMapper.toAnnouncementDto(updatedAnnouncement);
     }
