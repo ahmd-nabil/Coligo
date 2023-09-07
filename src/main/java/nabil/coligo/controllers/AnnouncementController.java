@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import nabil.coligo.dtos.AnnouncementAllDto;
 import nabil.coligo.dtos.AnnouncementCreateDto;
 import nabil.coligo.dtos.AnnouncementDto;
+import nabil.coligo.dtos.AnnouncementUpdateDto;
 import nabil.coligo.services.AnnouncementService;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -42,8 +43,8 @@ public class AnnouncementController {
 
     @PutMapping("/{id}")
     public ResponseEntity<?> updateAnnouncement(@PathVariable(name = "id") Long id,
-                                                @RequestBody AnnouncementCreateDto announcementCreateDto) {
-        announcementService.update(id, announcementCreateDto);
+                                                @RequestBody AnnouncementUpdateDto dto) {
+        announcementService.update(id, dto);
         return ResponseEntity.ok().build();
     }
 

@@ -4,8 +4,8 @@ import lombok.RequiredArgsConstructor;
 import nabil.coligo.dtos.AnnouncementAllDto;
 import nabil.coligo.dtos.AnnouncementCreateDto;
 import nabil.coligo.dtos.AnnouncementDto;
+import nabil.coligo.dtos.AnnouncementUpdateDto;
 import nabil.coligo.exceptions.AnnouncementNotFoundException;
-import nabil.coligo.exceptions.UserNotFoundException;
 import nabil.coligo.mappers.AnnouncementMapper;
 import nabil.coligo.model.Announcement;
 import nabil.coligo.model.User;
@@ -13,6 +13,7 @@ import nabil.coligo.repositories.AnnouncementRepository;
 import nabil.coligo.repositories.UserRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,7 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Transactional
 public class AnnouncementServiceJpa implements AnnouncementService{
-
+    // TODO validate that only the owner of the resource would be able to change it
     private final AnnouncementRepository announcementRepository;
     private final AnnouncementMapper announcementMapper;
     private final UserRepository userRepository;
@@ -44,17 +45,16 @@ public class AnnouncementServiceJpa implements AnnouncementService{
 
     @Override
     public AnnouncementDto save(AnnouncementCreateDto announcementCreateDto) {
-        User user = userRepository.findById(announcementCreateDto.getUserId()).orElseThrow(UserNotFoundException::new);
+        User user = userRepository.findByEmailIgnoreCase(SecurityContextHolder.getContext().getAuthentication().getName());
         Announcement announcement = announcementMapper.toAnnouncement(announcementCreateDto);
         user.addAnnouncement(announcement);
         return announcementMapper.toAnnouncementDto(announcement);
     }
 
-    // TODO needs to be checked
     @Override
-    public AnnouncementDto update(Long id, AnnouncementCreateDto announcementCreateDto) {
+    public AnnouncementDto update(Long id, AnnouncementUpdateDto dto) {
         Announcement updatedAnnouncement = announcementRepository.findById(id).orElseThrow(AnnouncementNotFoundException::new);
-        updatedAnnouncement.setContent(announcementCreateDto.getContent());
+        updatedAnnouncement.setContent(dto.getContent());
         return announcementMapper.toAnnouncementDto(updatedAnnouncement);
     }
 
