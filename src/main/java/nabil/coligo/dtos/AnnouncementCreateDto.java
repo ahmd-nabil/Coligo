@@ -15,7 +15,6 @@ import java.time.LocalDateTime;
 @Data
 @Builder
 public class AnnouncementCreateDto {
-    private Long id;
     private String content;
     private Long userId;
     private LocalDateTime createdAt;
