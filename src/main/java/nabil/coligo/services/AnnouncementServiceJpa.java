@@ -65,7 +65,9 @@ public class AnnouncementServiceJpa implements AnnouncementService{
 
     @Override
     public void deleteById(Long id) {
-        if(!announcementRepository.existsById(id)) throw new AnnouncementNotFoundException();
+        Announcement announcement = announcementRepository.findById(id).orElseThrow(AnnouncementNotFoundException::new);
+        if(!announcement.getUser().getEmail().equals(SecurityContextHolder.getContext().getAuthentication().getName()))
+            throw new ForbiddenDataAccessException();
         announcementRepository.deleteById(id);
     }
 
