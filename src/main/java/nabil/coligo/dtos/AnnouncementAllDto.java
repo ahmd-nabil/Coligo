@@ -17,6 +17,6 @@ import java.time.LocalDateTime;
 public class AnnouncementAllDto {
     private Long id;
     private String content;
-    private UserSlimDto user;
+    private AnnouncementOwnerDto user;
     private LocalDateTime createdAt;
 }
