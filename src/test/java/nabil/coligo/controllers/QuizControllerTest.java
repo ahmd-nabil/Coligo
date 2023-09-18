@@ -129,7 +129,7 @@ class QuizControllerTest {
     @Test
     void testSaveQuiz() throws Exception {
         // given
-        given(quizService.save(any())).willReturn(quiz);
+        given(quizService.save(any())).willReturn(quizMapper.toQuizGetDto(quiz));
         mockMvc.perform(
                 post("/api/v1/quizzes")
                 .header("Authorization", token)
@@ -143,7 +143,7 @@ class QuizControllerTest {
     @Test
     void testUpdateQuiz() throws Exception {
         // given
-        given(quizService.update(any(), any())).willReturn(quiz);
+        given(quizService.update(any(), any())).willReturn(quizMapper.toQuizGetDto(quiz));
 
         mockMvc.perform(
                 put("/api/v1/quizzes/1")

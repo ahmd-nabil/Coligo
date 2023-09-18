@@ -1,9 +1,6 @@
 package nabil.coligo.services;
 
-import nabil.coligo.dtos.AnswerCreateDto;
-import nabil.coligo.dtos.QuestionCreateDto;
-import nabil.coligo.dtos.QuizAllDto;
-import nabil.coligo.dtos.QuizCreateDto;
+import nabil.coligo.dtos.*;
 import nabil.coligo.mappers.QuizMapper;
 import nabil.coligo.model.Answer;
 import nabil.coligo.model.Question;
@@ -109,6 +106,6 @@ class QuizServiceJpaTest {
                 .topic("Arrays")
                 .dueTo(LocalDateTime.parse("2023-05-31T01:30:00"))
                 .questions(new HashSet<>(Arrays.asList(question1, question2, question3))).build();
-        Quiz saved = quizServiceJpa.save(quiz1);
+        QuizGetDto saved = quizServiceJpa.save(quiz1);
     }
 }

@@ -6,7 +6,6 @@ import nabil.coligo.dtos.QuizCreateDto;
 import nabil.coligo.dtos.QuizGetDto;
 import nabil.coligo.dtos.QuizUpdateDto;
 import nabil.coligo.exceptions.QuizNotFoundException;
-import nabil.coligo.model.Quiz;
 import nabil.coligo.services.QuizService;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -37,8 +36,8 @@ public class QuizController {
 
     @PostMapping
     public ResponseEntity<URI> saveQuiz(@RequestBody QuizCreateDto quizCreateDto) {
-        Quiz savedQuiz = quizService.save(quizCreateDto);
-        return ResponseEntity.created(URI.create("/api/v1/quizzes/" + savedQuiz.getId())).build();
+        QuizGetDto savedQuizDto = quizService.save(quizCreateDto);
+        return ResponseEntity.created(URI.create("/api/v1/quizzes/" + savedQuizDto.getId())).build();
     }
 
     @PutMapping("/{id}")

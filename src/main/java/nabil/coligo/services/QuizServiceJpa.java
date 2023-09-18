@@ -36,17 +36,17 @@ public class QuizServiceJpa implements QuizService{
     }
 
     @Override
-    public Quiz save(QuizCreateDto quizCreateDto) {
+    public QuizGetDto save(QuizCreateDto quizCreateDto) {
         Quiz quiz = quizMapper.toQuiz(quizCreateDto);
-        return quizRepository.save(quiz);
+        return quizMapper.toQuizGetDto(quizRepository.save(quiz));
     }
 
     @Override
-    public Quiz update(Long id, QuizUpdateDto dto) {
+    public QuizGetDto update(Long id, QuizUpdateDto dto) {
         Quiz persistedQuiz = quizRepository.findById(id).orElseThrow(QuizNotFoundException::new);
         persistedQuiz = quizMapper.toQuiz(dto);
         quizRepository.save(persistedQuiz);
-        return persistedQuiz;
+        return quizMapper.toQuizGetDto(persistedQuiz);
     }
 
     @Override
