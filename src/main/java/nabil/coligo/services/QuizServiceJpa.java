@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import nabil.coligo.dtos.QuizAllDto;
 import nabil.coligo.dtos.QuizCreateDto;
 import nabil.coligo.dtos.QuizGetDto;
+import nabil.coligo.dtos.QuizUpdateDto;
 import nabil.coligo.exceptions.QuizNotFoundException;
 import nabil.coligo.mappers.QuizMapper;
 import nabil.coligo.model.Quiz;
@@ -13,13 +14,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
 /**
  * @author Ahmed Nabil
  */
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class QuizServiceJpa implements QuizService{
 
     private final QuizRepository quizRepository;
@@ -42,17 +42,11 @@ public class QuizServiceJpa implements QuizService{
     }
 
     @Override
-    @Transactional
-    public Optional<Quiz> update(Long id, Quiz quiz) {
-        Optional<Quiz> optionalQuiz = quizRepository.findById(id);
-        if(optionalQuiz.isEmpty())
-            return optionalQuiz;
-        Quiz foundQuiz = optionalQuiz.get();
-        foundQuiz.setCourseName(quiz.getCourseName());
-        foundQuiz.setTopic(quiz.getTopic());
-        foundQuiz.setDueTo(quiz.getDueTo());
-        foundQuiz.setQuestions(quiz.getQuestions());
-        return Optional.of(foundQuiz);
+    public Quiz update(Long id, QuizUpdateDto dto) {
+        Quiz persistedQuiz = quizRepository.findById(id).orElseThrow(QuizNotFoundException::new);
+        persistedQuiz = quizMapper.toQuiz(dto);
+        quizRepository.save(persistedQuiz);
+        return persistedQuiz;
     }
 
     @Override
@@ -61,6 +55,6 @@ public class QuizServiceJpa implements QuizService{
             quizRepository.deleteById(id);
             return true;
         }
-        return false;
+        throw new QuizNotFoundException();
     }
 }

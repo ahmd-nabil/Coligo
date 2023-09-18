@@ -5,6 +5,7 @@ import nabil.coligo.dtos.AnswerCreateDto;
 import nabil.coligo.dtos.QuestionCreateDto;
 import nabil.coligo.dtos.QuizCreateDto;
 import nabil.coligo.dtos.QuizUpdateDto;
+import nabil.coligo.exceptions.QuizNotFoundException;
 import nabil.coligo.mappers.QuizMapper;
 import nabil.coligo.model.*;
 import nabil.coligo.services.QuizService;
@@ -25,7 +26,6 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -143,7 +143,7 @@ class QuizControllerTest {
     @Test
     void testUpdateQuiz() throws Exception {
         // given
-        given(quizService.update(any(), any())).willReturn(Optional.of(quiz));
+        given(quizService.update(any(), any())).willReturn(quiz);
 
         mockMvc.perform(
                 put("/api/v1/quizzes/1")
@@ -169,7 +169,7 @@ class QuizControllerTest {
     @Test
     void testUpdateQuizFails() throws Exception {
         // given
-        given(quizService.update(any(), any())).willReturn(Optional.empty());
+        given(quizService.update(any(), any())).willThrow(new QuizNotFoundException());
         mockMvc.perform(
                 put("/api/v1/quizzes/11")
                 .accept(MediaType.APPLICATION_JSON)

@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import nabil.coligo.dtos.QuizAllDto;
 import nabil.coligo.dtos.QuizCreateDto;
 import nabil.coligo.dtos.QuizGetDto;
+import nabil.coligo.dtos.QuizUpdateDto;
 import nabil.coligo.exceptions.QuizNotFoundException;
 import nabil.coligo.model.Quiz;
 import nabil.coligo.services.QuizService;
@@ -41,8 +42,8 @@ public class QuizController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateQuiz(@PathVariable(name = "id") Long id, @RequestBody Quiz quiz) {
-        quizService.update(id, quiz).orElseThrow(QuizNotFoundException::new);
+    public ResponseEntity<?> updateQuiz(@PathVariable(name = "id") Long id, @RequestBody QuizUpdateDto dto) {
+        quizService.update(id, dto);
         return ResponseEntity.ok().build();
     }
 
