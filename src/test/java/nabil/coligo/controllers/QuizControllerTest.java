@@ -4,12 +4,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import nabil.coligo.dtos.AnswerCreateDto;
 import nabil.coligo.dtos.QuestionCreateDto;
 import nabil.coligo.dtos.QuizCreateDto;
+import nabil.coligo.dtos.QuizUpdateDto;
+import nabil.coligo.mappers.QuizMapper;
 import nabil.coligo.model.*;
 import nabil.coligo.services.QuizService;
 import nabil.coligo.services.auth.JwtService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -48,6 +51,7 @@ class QuizControllerTest {
     ObjectMapper objectMapper;
     private static String token;
 
+    QuizMapper quizMapper = Mappers.getMapper(QuizMapper.class);
     @BeforeAll
     static void beforeAll() {
         User user = User.builder()
@@ -63,6 +67,7 @@ class QuizControllerTest {
 
     Quiz quiz;
     QuizCreateDto quizCreateDto;
+    QuizUpdateDto quizUpdateDto;
     @BeforeEach
     void setUp() {
         Answer answer1 = Answer.builder().id(1L)
@@ -117,6 +122,7 @@ class QuizControllerTest {
                 .topic("Arrays")
                 .dueTo(LocalDateTime.parse("2023-05-31T01:30:00"))
                 .questions(new HashSet<>(Arrays.asList(questionCreateDto1, questionCreateDto2, questionCreateDto3))).build();
+        quizUpdateDto = quizMapper.toQuizUpdateDto(quiz);
 
     }
 
@@ -144,7 +150,7 @@ class QuizControllerTest {
                 .header("Authorization", token)
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsBytes(quiz)))
+                .content(objectMapper.writeValueAsBytes(quizUpdateDto)))
                 .andExpect(status().isOk());
     }
 
@@ -169,7 +175,7 @@ class QuizControllerTest {
                 .accept(MediaType.APPLICATION_JSON)
                 .header("Authorization", token)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsBytes(quiz)))
+                .content(objectMapper.writeValueAsBytes(quizUpdateDto)))
                 .andExpect(status().isNotFound());
     }
 
