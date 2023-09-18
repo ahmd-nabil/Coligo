@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class UserSlimDto {
     private Long id;
+    private String email;
     private String firstName;
     private String lastName;
 }
