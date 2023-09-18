@@ -52,13 +52,13 @@ public class AnnouncementServiceJpa implements AnnouncementService{
         return announcementMapper.toAnnouncementDto(announcement);
     }
 
+    // TODO ask for best practices about securing against non-resource-owners
     @Override
 //    @PostAuthorize("returnObject.user.email == authentication.name") // this will work only with get requests (does not roll back)
     public AnnouncementDto update(Long id, AnnouncementUpdateDto dto) {
-        String authenticatedEmail = SecurityContextHolder.getContext().getAuthentication().getName();
         Announcement updatedAnnouncement = announcementRepository.findById(id).orElseThrow(AnnouncementNotFoundException::new);
         String resourceOwnerEmail = updatedAnnouncement.getUser().getUsername();
-        if(!authenticatedEmail.equals(resourceOwnerEmail)) throw new ForbiddenDataAccessException();
+        checkIfEqualsAuthenticatedUser(resourceOwnerEmail);
         updatedAnnouncement.setContent(dto.getContent());
         return announcementMapper.toAnnouncementDto(updatedAnnouncement);
     }
@@ -66,9 +66,12 @@ public class AnnouncementServiceJpa implements AnnouncementService{
     @Override
     public void deleteById(Long id) {
         Announcement announcement = announcementRepository.findById(id).orElseThrow(AnnouncementNotFoundException::new);
-        if(!announcement.getUser().getEmail().equals(SecurityContextHolder.getContext().getAuthentication().getName()))
-            throw new ForbiddenDataAccessException();
+        checkIfEqualsAuthenticatedUser(announcement.getUser().getEmail());
         announcementRepository.deleteById(id);
     }
 
+    private void checkIfEqualsAuthenticatedUser(String resourceOwner) throws ForbiddenDataAccessException{
+        String authenticatedEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+        if(!resourceOwner.equals(authenticatedEmail)) throw new ForbiddenDataAccessException();
+    }
 }
