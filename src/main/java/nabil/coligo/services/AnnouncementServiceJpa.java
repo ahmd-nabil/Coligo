@@ -6,7 +6,6 @@ import nabil.coligo.dtos.AnnouncementCreateDto;
 import nabil.coligo.dtos.AnnouncementDto;
 import nabil.coligo.dtos.AnnouncementUpdateDto;
 import nabil.coligo.exceptions.AnnouncementNotFoundException;
-import nabil.coligo.exceptions.ForbiddenDataAccessException;
 import nabil.coligo.mappers.AnnouncementMapper;
 import nabil.coligo.model.Announcement;
 import nabil.coligo.model.User;
@@ -29,7 +28,7 @@ public class AnnouncementServiceJpa implements AnnouncementService{
     private final AnnouncementRepository announcementRepository;
     private final AnnouncementMapper announcementMapper;
     private final UserRepository userRepository;
-
+    private final UtilService utilService;
     @Override
     public Page<AnnouncementAllDto> findAll(Integer pageNumber, Integer pageSize) {
         Pageable pageable = PagingService.getPageable(pageNumber, pageSize);
@@ -58,7 +57,7 @@ public class AnnouncementServiceJpa implements AnnouncementService{
     public AnnouncementDto update(Long id, AnnouncementUpdateDto dto) {
         Announcement updatedAnnouncement = announcementRepository.findById(id).orElseThrow(AnnouncementNotFoundException::new);
         String resourceOwnerEmail = updatedAnnouncement.getUser().getUsername();
-        checkIfEqualsAuthenticatedUser(resourceOwnerEmail);
+        utilService.checkIfEqualsAuthenticatedUser(resourceOwnerEmail);
         updatedAnnouncement.setContent(dto.getContent());
         return announcementMapper.toAnnouncementDto(updatedAnnouncement);
     }
@@ -66,12 +65,7 @@ public class AnnouncementServiceJpa implements AnnouncementService{
     @Override
     public void deleteById(Long id) {
         Announcement announcement = announcementRepository.findById(id).orElseThrow(AnnouncementNotFoundException::new);
-        checkIfEqualsAuthenticatedUser(announcement.getUser().getEmail());
+        utilService.checkIfEqualsAuthenticatedUser(announcement.getUser().getEmail());
         announcementRepository.deleteById(id);
-    }
-
-    private void checkIfEqualsAuthenticatedUser(String resourceOwner) throws ForbiddenDataAccessException{
-        String authenticatedEmail = SecurityContextHolder.getContext().getAuthentication().getName();
-        if(!resourceOwner.equals(authenticatedEmail)) throw new ForbiddenDataAccessException();
     }
 }

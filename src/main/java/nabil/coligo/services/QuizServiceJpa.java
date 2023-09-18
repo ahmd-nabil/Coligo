@@ -24,6 +24,7 @@ public class QuizServiceJpa implements QuizService{
 
     private final QuizRepository quizRepository;
     private final QuizMapper quizMapper;
+    private final UtilService utilService;
     @Override
     public Page<QuizAllDto> findAll(Integer pageNumber, Integer pageSize) {
         Pageable pageable = PagingService.getPageable(pageNumber, pageSize);
@@ -44,6 +45,7 @@ public class QuizServiceJpa implements QuizService{
     @Override
     public QuizGetDto update(Long id, QuizUpdateDto dto) {
         Quiz persistedQuiz = quizRepository.findById(id).orElseThrow(QuizNotFoundException::new);
+//        utilService.checkIfEqualsAuthenticatedUser(persistedQuiz.getUser().getEmail());
         persistedQuiz = quizMapper.toQuiz(dto);
         quizRepository.save(persistedQuiz);
         return quizMapper.toQuizGetDto(persistedQuiz);
@@ -51,10 +53,9 @@ public class QuizServiceJpa implements QuizService{
 
     @Override
     public boolean delete(Long id) {
-        if(quizRepository.existsById(id)) {
-            quizRepository.deleteById(id);
-            return true;
-        }
-        throw new QuizNotFoundException();
+        Quiz quiz = quizRepository.findById(id).orElseThrow(QuizNotFoundException::new);
+//        utilService.checkIfEqualsAuthenticatedUser(persistedQuiz.getUser().getEmail());
+        quizRepository.deleteById(id);
+        return true;
     }
 }
